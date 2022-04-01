@@ -64,7 +64,7 @@ def parse_and_insert_data(line):
     insert_data_to_db(tx_time,tx_hash,cycles,ckb_vm)
 
 def log_to_pg_data():
-    p = subprocess.Popen('tail -F /Users/xuliya/Downloads/ckb_v0.101.7_x86_64-apple-darwin/data/logs/ckb_tx_monitor.log', shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,)    #起一个进程，执行shell命令
+    p = subprocess.Popen('tail -F /var/logs/ckb_tx_monitor.log', shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,)    #起一个进程，执行shell命令
     while True:
         line = p.stdout.readline()   #实时获取行
         if line:                   #如果行存在的话
