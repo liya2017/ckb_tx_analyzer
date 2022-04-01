@@ -1,0 +1,13 @@
+[Unit]
+Description=parse log and insert it to pg
+
+[Service]
+# Command to execute when the service is started
+ExecStart=/usr/bin/python3 /home/ckb/ckb_tx_analyzer/src/ckb_tx_monitor.py
+Type=simple
+Restart=always
+RestartSec=2
+User=ckb
+
+[Install]
+WantedBy=multi-user.target
