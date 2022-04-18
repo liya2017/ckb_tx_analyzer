@@ -6,7 +6,7 @@ import re
 import codecs
 import subprocess
 import platform
-def config(filename='database.ini', section='postgresql'):
+def config(filename='/home/ckb/ckb_tx_analyzer/src/database.ini', section='postgresql'):
     # create a parser
     parser = ConfigParser()
     # read config file
@@ -52,19 +52,19 @@ def get_postgresql_connection(sql):
             print('Database connection closed.')
 
 def insert_data_to_db(tx_time,tx_hash,cycles,ckb_vm):
-    sql="INSERT INTO tx_monitor (tx_time, tx_hash, cycles,vm_version) VALUES ('"+tx_time+"','"+tx_hash+"','"+cycles+"','"+ckb_vm+"')"
+    sql="INSERT INTO tx_monitor_mainnet (tx_time, tx_hash, cycles,vm_version) VALUES ('"+tx_time+"','"+tx_hash+"','"+cycles+"','"+ckb_vm+"')"
     print(sql)
     get_postgresql_connection(sql)
 
 def parse_and_insert_data(line):
-    tx_time=str(line).split("+")[0].split("'")[1]
-    tx_hash=str(line).split("{")[1].split(",")[0].split(":")[1]
+    tx_time=str(line).split(".")[0].split("'")[1]
+    tx_hash=str(line).split("{")[1].split(",")[0].split(":")[1].split('"')[1]
     cycles=str(line).split("{")[1].split(",")[1].split(":")[1].split("}")[0]
-    ckb_vm="aarch64 ASM"
+    ckb_vm="bootnode"
     insert_data_to_db(tx_time,tx_hash,cycles,ckb_vm)
 
 def log_to_pg_data():
-    p = subprocess.Popen('tail -F /var/logs/ckb_tx_monitor.log', shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,)    #起一个进程，执行shell命令
+    p = subprocess.Popen('tail -F /Users/xuliya/Downloads/ckb_v0.101.7_x86_64-apple-darwin/data/logs/ckb_tx_monitor.log', shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,)    #起一个进程，执行shell命令
     while True:
         line = p.stdout.readline()   #实时获取行
         if line:                   #如果行存在的话
